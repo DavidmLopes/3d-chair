@@ -1,12 +1,31 @@
 import * as THREE from "three";
 import { Timer } from "three/examples/jsm/Addons.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 // Canvas
 const canvas = document.getElementById("webgl");
 
 // Scene
 const scene = new THREE.Scene();
+
+// Loader
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath("/draco/");
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+// Model
+gltfLoader.load("/models/chair.glb", (gltf) => {
+  const chair = gltf.scene;
+  scene.add(chair);
+});
+
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+scene.add(ambientLight);
 
 // Sizes
 const sizes = {
@@ -21,14 +40,15 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   100
 );
-camera.position.x = 3;
-camera.position.y = 3;
-camera.position.z = 3;
+camera.position.x = 0;
+camera.position.y = 1;
+camera.position.z = 1;
 scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+controls.target.set(0, 0.5, 0);
 
 // Handle Resize
 window.addEventListener("resize", () => {
