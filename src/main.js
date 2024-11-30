@@ -20,12 +20,33 @@ gltfLoader.setDRACOLoader(dracoLoader);
 // Model
 gltfLoader.load("/models/chair.glb", (gltf) => {
   const chair = gltf.scene;
+  chair.traverse((child) => {
+    child.castShadow = true;
+    child.receiveShadow = true;
+  });
   scene.add(chair);
 });
 
 // Lights
 const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
 scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+directionalLight.position.set(1.5, 1.5, 1.5);
+directionalLight.castShadow = true;
+directionalLight.shadow.mapSize.width = 2048;
+directionalLight.shadow.mapSize.height = 2048;
+directionalLight.shadow.camera.near = 1;
+directionalLight.shadow.camera.far = 4;
+directionalLight.shadow.camera.left = -0.5;
+directionalLight.shadow.camera.right = 0.5;
+directionalLight.shadow.camera.top = 1;
+directionalLight.shadow.camera.bottom = -0.5;
+scene.add(directionalLight);
+
+// Camera Helper
+const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
+scene.add(cameraHelper);
 
 // Sizes
 const sizes = {
@@ -68,6 +89,8 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.render(scene, camera);
 
 // Animate
