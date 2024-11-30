@@ -3,6 +3,13 @@ import { Timer } from "three/examples/jsm/Addons.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { Pane } from "tweakpane";
+
+// Debug
+const pane = new Pane({
+  title: "Settings",
+  expanded: true,
+});
 
 // Canvas
 const canvas = document.getElementById("webgl");
@@ -47,6 +54,16 @@ scene.add(directionalLight);
 // Camera Helper
 const cameraHelper = new THREE.CameraHelper(directionalLight.shadow.camera);
 scene.add(cameraHelper);
+cameraHelper.visible = false;
+
+// Debug camera helper
+pane
+  .addButton({
+    title: "Toggle Camera Helper",
+  })
+  .on("click", () => {
+    cameraHelper.visible = !cameraHelper.visible;
+  });
 
 // Sizes
 const sizes = {
