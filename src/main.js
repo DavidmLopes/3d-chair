@@ -41,14 +41,14 @@ const camera = new THREE.PerspectiveCamera(
   100
 );
 camera.position.x = 0;
-camera.position.y = 1;
+camera.position.y = 0.8;
 camera.position.z = 1;
 scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
-controls.target.set(0, 0.5, 0);
+controls.target.set(0, 0.4, 0);
 
 // Handle Resize
 window.addEventListener("resize", () => {
