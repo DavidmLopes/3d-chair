@@ -25,12 +25,49 @@ dracoLoader.setDecoderPath("/draco/");
 const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
+const textureLoader = new THREE.TextureLoader();
+const wood1BaseColor = textureLoader.load("/textures/Wood/Wood1.jpg");
+const wood2BaseColor = textureLoader.load("/textures/Wood/Wood2.jpg");
+
+// Set correct color space for all textures
+[wood1BaseColor, wood2BaseColor].forEach((texture) => {
+  texture.colorSpace = THREE.SRGBColorSpace;
+});
+
+const woodOptions = {
+  Wood1: wood1BaseColor,
+  Wood2: wood2BaseColor,
+};
+
 // Model
 gltfLoader.load("/models/chair.glb", (gltf) => {
   const chair = gltf.scene;
   chair.traverse((child) => {
     child.castShadow = true;
     child.receiveShadow = true;
+
+    if (child.isMesh && child.name.includes("Chair")) {
+      // Clone material to avoid affecting other meshes
+      child.material = child.material.clone();
+
+      // Create state object for this mesh
+      const state = {
+        [child.name]: "Wood1",
+      };
+
+      // Add dropdown for wood selection
+      pane
+        .addBinding(state, child.name, {
+          options: {
+            Wood1: "Wood1",
+            Wood2: "Wood2",
+          },
+        })
+        .on("change", (ev) => {
+          child.material.map = woodOptions[ev.value];
+          child.material.needsUpdate = true;
+        });
+    }
   });
   scene.add(chair);
 });
