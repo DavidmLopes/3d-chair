@@ -26,6 +26,7 @@ const gltfLoader = new GLTFLoader();
 gltfLoader.setDRACOLoader(dracoLoader);
 
 const textureLoader = new THREE.TextureLoader();
+
 const wood1BaseColor = textureLoader.load("/textures/Wood/Wood1.jpg");
 const wood2BaseColor = textureLoader.load("/textures/Wood/Wood2.jpg");
 
