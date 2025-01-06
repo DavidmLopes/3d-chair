@@ -16,7 +16,7 @@ const canvas = document.getElementById("webgl");
 
 // Scene
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xaaaaaa);
+scene.background = new THREE.Color(0xcccccc);
 
 // Loader
 const dracoLoader = new DRACOLoader();
