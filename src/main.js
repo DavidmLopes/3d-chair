@@ -29,15 +29,21 @@ const textureLoader = new THREE.TextureLoader();
 
 const wood1BaseColor = textureLoader.load("/textures/Wood/Wood1.jpg");
 const wood2BaseColor = textureLoader.load("/textures/Wood/Wood2.jpg");
+const wood3BaseColor = textureLoader.load("/textures/Wood/Wood3.jpg");
+const wood4BaseColor = textureLoader.load("/textures/Wood/Wood4.jpg");
 
 // Set correct color space for all textures
-[wood1BaseColor, wood2BaseColor].forEach((texture) => {
-  texture.colorSpace = THREE.SRGBColorSpace;
-});
+[wood1BaseColor, wood2BaseColor, wood3BaseColor, wood4BaseColor].forEach(
+  (texture) => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+  }
+);
 
 const woodOptions = {
   Wood1: wood1BaseColor,
   Wood2: wood2BaseColor,
+  Wood3: wood3BaseColor,
+  Wood4: wood4BaseColor,
 };
 
 // Model
@@ -62,6 +68,8 @@ gltfLoader.load("/models/chair.glb", (gltf) => {
           options: {
             Wood1: "Wood1",
             Wood2: "Wood2",
+            Wood3: "Wood3",
+            Wood4: "Wood4",
           },
         })
         .on("change", (ev) => {
