@@ -19,3 +19,11 @@ body {
   left: 0;
   outline: none;
 }
+
+.material-button {
+  @apply w-14 overflow-hidden rounded-full border-2 border-neutral-400 bg-white/20 p-1 transition-all duration-200 hover:p-0;
+}
+
+.material-button.active {
+  @apply border-neutral-800;
+}

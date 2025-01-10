@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,5 +10,32 @@
   <body>
     <canvas id="webgl"></canvas>
     <script type="module" src="./main.js"></script>
+    <div
+      class="fixed bottom-4 left-4 z-[999] w-96 space-y-4 overflow-hidden rounded-lg bg-white/20 px-4 py-8 backdrop-blur"
+    >
+      <div class="flex items-center justify-center gap-8">
+        <span class="text-xl font-medium">Chair</span>
+      </div>
+      <div class="flex items-center justify-center gap-4">
+        <button
+          class="material-button active"
+          onclick="changeMaterial('LightWood')"
+        >
+          <img class="select-none rounded-full" src="textures/Wood/Wood1.jpg" />
+        </button>
+        <button class="material-button" onclick="changeMaterial('DarkWood')">
+          <img class="select-none rounded-full" src="textures/Wood/Wood2.jpg" />
+        </button>
+        <button class="material-button" onclick="changeMaterial('Black')">
+          <img class="select-none rounded-full" src="textures/Wood/Wood3.jpg" />
+        </button>
+        <button class="material-button" onclick="changeMaterial('White')">
+          <img class="select-none rounded-full" src="textures/Wood/Wood4.jpg" />
+        </button>
+      </div>
+      <div id="woodLabel" class="text-center text-sm text-neutral-400">
+        Light Wood
+      </div>
+    </div>
   </body>
 </html>

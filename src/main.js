@@ -36,15 +36,41 @@ const wood4BaseColor = textureLoader.load("/textures/Wood/Wood4.jpg");
 [wood1BaseColor, wood2BaseColor, wood3BaseColor, wood4BaseColor].forEach(
   (texture) => {
     texture.colorSpace = THREE.SRGBColorSpace;
-  }
+  },
 );
 
 const woodOptions = {
-  Wood1: wood1BaseColor,
-  Wood2: wood2BaseColor,
-  Wood3: wood3BaseColor,
-  Wood4: wood4BaseColor,
+  LightWood: wood1BaseColor,
+  DarkWood: wood2BaseColor,
+  Black: wood3BaseColor,
+  White: wood4BaseColor,
 };
+
+window.changeMaterial = changeMaterial;
+
+function changeMaterial(selectedWood) {
+  const selectedTexture = woodOptions[selectedWood];
+
+  // Update material
+  scene.traverse((child) => {
+    if (child.isMesh && child.name.includes("Chair")) {
+      child.material.map = selectedTexture;
+      child.material.needsUpdate = true;
+    }
+  });
+
+  // Update button styles
+  const buttons = document.querySelectorAll(".material-button");
+  buttons.forEach((button) => {
+    button.classList.remove("active");
+    if (button.onclick.toString().includes(selectedWood)) {
+      button.classList.add("active");
+    }
+  });
+
+  const formattedWood = selectedWood.replace(/([A-Z])/g, " $1").trim();
+  document.getElementById("woodLabel").textContent = formattedWood;
+}
 
 // Model
 gltfLoader.load("/models/chair.glb", (gltf) => {
@@ -59,17 +85,17 @@ gltfLoader.load("/models/chair.glb", (gltf) => {
 
       // Create state object for this mesh
       const state = {
-        [child.name]: "Wood1",
+        [child.name]: "LightWood",
       };
 
       // Add dropdown for wood selection
       pane
         .addBinding(state, child.name, {
           options: {
-            Wood1: "Wood1",
-            Wood2: "Wood2",
-            Wood3: "Wood3",
-            Wood4: "Wood4",
+            LightWood: "LightWood",
+            DarkWood: "DarkWood",
+            Black: "Black",
+            White: "White",
           },
         })
         .on("change", (ev) => {
@@ -123,7 +149,7 @@ const camera = new THREE.PerspectiveCamera(
   75,
   sizes.width / sizes.height,
   0.1,
-  100
+  100,
 );
 camera.position.x = 0.5;
 camera.position.y = 0.8;
