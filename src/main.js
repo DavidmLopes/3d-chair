@@ -11,6 +11,18 @@ const pane = new Pane({
   expanded: true,
 });
 
+pane.element.style.display = "none";
+
+window.addEventListener("keydown", (event) => {
+  if (event.key === "d") {
+    if (pane.element.style.display === "none") {
+      pane.element.style.display = "block";
+    } else {
+      pane.element.style.display = "none";
+    }
+  }
+});
+
 // Canvas
 const canvas = document.getElementById("webgl");
 
