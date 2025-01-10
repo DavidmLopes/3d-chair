@@ -153,7 +153,8 @@ pane
 // Sizes
 const sizes = {
   width: window.innerWidth,
-  height: window.innerHeight,
+  height:
+    window.innerWidth > 640 ? window.innerHeight : window.innerHeight * 0.8,
 };
 
 // Camera
@@ -176,7 +177,8 @@ controls.target.set(0, 0.4, 0);
 // Handle Resize
 window.addEventListener("resize", () => {
   sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+  sizes.height =
+    window.innerWidth > 640 ? window.innerHeight : window.innerHeight * 0.8;
 
   camera.aspect = sizes.width / sizes.height;
   camera.updateProjectionMatrix();

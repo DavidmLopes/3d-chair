@@ -3,4 +3,4 @@
 #### TODO:
 
 - [ ] Loading state on load.
-- [ ] Mobile view
+- [x] Mobile view
