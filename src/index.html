@@ -11,10 +11,10 @@
     <canvas id="webgl"></canvas>
     <script type="module" src="./main.js"></script>
     <div
-      class="fixed bottom-0 left-0 z-[999] w-full space-y-4 overflow-hidden rounded-none bg-white px-4 py-8 backdrop-blur sm:bottom-4 sm:left-4 sm:w-96 sm:rounded-lg sm:bg-white/20"
+      class="fixed bottom-0 left-0 z-[999] w-full space-y-2 overflow-hidden rounded-none bg-white px-4 py-4 backdrop-blur sm:bottom-4 sm:left-4 sm:w-96 sm:space-y-4 sm:rounded-lg sm:bg-white/20 sm:py-8"
     >
       <div class="flex items-center justify-center gap-8">
-        <span class="text-xl font-medium">Chair</span>
+        <span class="sm:ext-xl text-lg font-medium">Chair</span>
       </div>
       <div class="flex items-center justify-center gap-4">
         <button
@@ -33,7 +33,10 @@
           <img class="select-none rounded-full" src="textures/Wood/Wood4.jpg" />
         </button>
       </div>
-      <div id="woodLabel" class="text-center text-sm text-neutral-400">
+      <div
+        id="woodLabel"
+        class="text-center text-xs text-neutral-400 sm:text-sm"
+      >
         Light Wood
       </div>
     </div>
