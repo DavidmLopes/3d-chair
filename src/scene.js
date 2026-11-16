@@ -41,7 +41,11 @@ const dracoLoader = new DRACOLoader(manager);
 const gltfLoader = new GLTFLoader(manager);
 gltfLoader.setDRACOLoader(dracoLoader);
 
-const { registerMesh } = createMaterials(pane, manager);
+const {
+  registerMesh,
+  setRevealBounds,
+  update: updateMaterials,
+} = createMaterials(pane, manager);
 
 // Model
 gltfLoader.load(`${import.meta.env.BASE_URL}models/chair.glb`, (gltf) => {
@@ -53,6 +57,7 @@ gltfLoader.load(`${import.meta.env.BASE_URL}models/chair.glb`, (gltf) => {
     registerMesh(child);
   });
   scene.add(chair);
+  setRevealBounds(chair);
   loading.setStage("Loading materials…");
 });
 
@@ -140,8 +145,9 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.render(scene, camera);
 
 // Animate
-renderer.setAnimationLoop(() => {
+renderer.setAnimationLoop((time) => {
   controls.update();
+  updateMaterials(time, camera, renderer);
   renderer.render(scene, camera);
 
   // Reveal the viewer only after every asset has loaded and a frame is drawn.

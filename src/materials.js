@@ -1,4 +1,5 @@
 import { SRGBColorSpace, TextureLoader } from "three";
+import { createMaterialReveal } from "./material-reveal.js";
 
 export function createMaterials(pane, manager) {
   const textureLoader = new TextureLoader(manager);
@@ -17,14 +18,14 @@ export function createMaterials(pane, manager) {
       return [key, texture];
     }),
   );
+  const reveal = createMaterialReveal(Object.values(textures));
   const meshes = [];
   const buttons = document.querySelectorAll("[data-material]");
   let selectedMaterial = "LightWood";
   let hasSelection = false;
 
   function applyTexture(mesh, key) {
-    mesh.material.map = textures[key];
-    mesh.material.needsUpdate = true;
+    reveal.transition(mesh, textures[key]);
   }
 
   function selectMaterial(key) {
@@ -47,9 +48,12 @@ export function createMaterials(pane, manager) {
   });
 
   return {
+    setRevealBounds: reveal.setBounds,
+    update: reveal.update,
     registerMesh(mesh) {
       if (!mesh.isMesh || !mesh.name.includes("Chair")) return;
       mesh.material = mesh.material.clone();
+      reveal.register(mesh);
       meshes.push(mesh);
       // A selection made before the model finishes loading still takes effect.
       // Preserve the model's original default map until a swatch is selected.
