@@ -5,18 +5,25 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "preview": "vite preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "prettier": "^3.4.2",
-    "prettier-plugin-tailwindcss": "^0.6.9",
-    "tailwindcss": "^3.4.17",
-    "vite": "^6.0.7"
+    "@tailwindcss/vite": "4.3.5",
+    "prettier": "3.10.1",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "tailwindcss": "4.3.5",
+    "vite": "8.3.8"
   },
   "dependencies": {
-    "three": "^0.172.0",
-    "tweakpane": "^4.0.5"
+    "three": "0.187.0",
+    "tweakpane": "4.0.5"
+  },
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
   }
 }

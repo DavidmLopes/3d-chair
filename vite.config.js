@@ -1,10 +1,10 @@
-export default {
-  root: "src",
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
   base: "./",
-  publicDir: "../public",
+  plugins: [tailwindcss()],
   build: {
-    outDir: "../dist",
-    emptyOutDir: true,
     sourcemap: true,
   },
-};
+});
