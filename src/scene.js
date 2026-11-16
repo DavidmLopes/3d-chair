@@ -4,6 +4,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { createMaterials } from "./materials.js";
 import { createLoadingState } from "./loading.js";
+import { createInteractionHint } from "./interaction-hint.js";
 import { Pane } from "tweakpane";
 
 // Debug
@@ -58,6 +59,19 @@ gltfLoader.load(`${import.meta.env.BASE_URL}models/chair.glb`, (gltf) => {
   });
   scene.add(chair);
   setRevealBounds(chair);
+
+  // An invisible floor receives the chair's shadow without adding a horizon.
+  // Use actual vertices: rotated bounding boxes can put the floor below the feet.
+  const bounds = new THREE.Box3().setFromObject(chair, true);
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(10, 10),
+    new THREE.ShadowMaterial({ opacity: 0.12, depthWrite: false }),
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = bounds.min.y - 0.0005;
+  ground.receiveShadow = true;
+  scene.add(ground);
+  renderer.shadowMap.needsUpdate = true;
   loading.setStage("Loading materials…");
 });
 
@@ -70,12 +84,14 @@ directionalLight.position.set(1.5, 1.5, 1.5);
 directionalLight.castShadow = true;
 directionalLight.shadow.mapSize.width = 2048;
 directionalLight.shadow.mapSize.height = 2048;
-directionalLight.shadow.camera.near = 1;
-directionalLight.shadow.camera.far = 4;
-directionalLight.shadow.camera.left = -0.5;
-directionalLight.shadow.camera.right = 0.5;
-directionalLight.shadow.camera.top = 1;
-directionalLight.shadow.camera.bottom = -0.5;
+directionalLight.shadow.camera.near = 0.1;
+directionalLight.shadow.camera.far = 6;
+directionalLight.shadow.camera.left = -1.2;
+directionalLight.shadow.camera.right = 1.2;
+directionalLight.shadow.camera.top = 1.2;
+directionalLight.shadow.camera.bottom = -1.2;
+directionalLight.shadow.radius = 10;
+directionalLight.shadow.bias = -0.0001;
 scene.add(directionalLight);
 
 // Camera Helper
@@ -120,6 +136,7 @@ controls.minDistance = 0.6;
 controls.maxDistance = 1.5;
 controls.target.set(0, 0.4, 0);
 controls.maxPolarAngle = Math.PI / 2;
+const interactionHint = createInteractionHint(controls);
 
 // Handle Resize
 window.addEventListener("resize", () => {
@@ -137,11 +154,14 @@ window.addEventListener("resize", () => {
 // Renderer
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
+  antialias: true,
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFShadowMap;
+// The chair and light stay fixed, so orbiting can reuse the same shadow map.
+renderer.shadowMap.autoUpdate = false;
 renderer.render(scene, camera);
 
 // Animate
@@ -156,5 +176,6 @@ renderer.setAnimationLoop((time) => {
       button.disabled = false;
     });
     controls.enabled = true;
+    interactionHint.show();
   }
 });

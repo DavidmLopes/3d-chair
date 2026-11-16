@@ -95,9 +95,33 @@ body {
   background: #ffffff60;
 }
 
+#interaction-hint {
+  position: fixed;
+  top: calc(1.25rem + env(safe-area-inset-top, 0px));
+  left: 50%;
+  z-index: 1;
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  transform: translateX(-50%);
+  text-align: center;
+  line-height: 1.5;
+  color: #666;
+  font-size: 0.75rem;
+  pointer-events: none;
+  transition:
+    opacity 0.25s ease,
+    visibility 0.25s ease;
+}
+
+#interaction-hint.is-dismissed {
+  opacity: 0;
+  visibility: hidden;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #loading-screen,
-  #loading-progress-fill {
+  #loading-progress-fill,
+  #interaction-hint {
     transition: none;
   }
 }
