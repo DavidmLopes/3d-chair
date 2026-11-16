@@ -3,6 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { createMaterials } from "./materials.js";
+import { createLoadingState } from "./loading.js";
 import { Pane } from "tweakpane";
 
 // Debug
@@ -31,13 +32,16 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xcccccc);
 
 // Loader
-// Vite bundles the decoder assets supplied by the pinned Three.js package.
-const dracoLoader = new DRACOLoader();
+const loading = createLoadingState(canvas);
+const manager = loading.manager;
 
-const gltfLoader = new GLTFLoader();
+// Vite bundles the decoder assets supplied by the pinned Three.js package.
+const dracoLoader = new DRACOLoader(manager);
+
+const gltfLoader = new GLTFLoader(manager);
 gltfLoader.setDRACOLoader(dracoLoader);
 
-const { registerMesh } = createMaterials(pane);
+const { registerMesh } = createMaterials(pane, manager);
 
 // Model
 gltfLoader.load(`${import.meta.env.BASE_URL}models/chair.glb`, (gltf) => {
@@ -49,6 +53,7 @@ gltfLoader.load(`${import.meta.env.BASE_URL}models/chair.glb`, (gltf) => {
     registerMesh(child);
   });
   scene.add(chair);
+  loading.setStage("Loading materials…");
 });
 
 // Lights
@@ -103,6 +108,7 @@ scene.add(camera);
 
 // Controls
 const controls = new OrbitControls(camera, canvas);
+controls.enabled = false;
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 0.6;
@@ -137,4 +143,12 @@ renderer.render(scene, camera);
 renderer.setAnimationLoop(() => {
   controls.update();
   renderer.render(scene, camera);
+
+  // Reveal the viewer only after every asset has loaded and a frame is drawn.
+  if (loading.finish()) {
+    document.querySelectorAll("[data-material]").forEach((button) => {
+      button.disabled = false;
+    });
+    controls.enabled = true;
+  }
 });

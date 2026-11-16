@@ -8,7 +8,30 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <canvas id="webgl"></canvas>
+    <canvas id="webgl" aria-label="3D chair viewer" aria-busy="true"></canvas>
+    <div id="loading-screen">
+      <div class="loading-content">
+        <div class="loading-progress-label">
+          <p id="loading-message" role="status" aria-live="polite">
+            Loading chair…
+          </p>
+          <span id="loading-percent" aria-hidden="true">0%</span>
+        </div>
+        <div id="loading-progress-group">
+          <div
+            id="loading-progress"
+            role="progressbar"
+            aria-label="Loading chair"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+          >
+            <div id="loading-progress-fill"></div>
+          </div>
+        </div>
+        <button id="loading-retry" type="button" hidden>Try again</button>
+      </div>
+    </div>
     <script type="module" src="/src/main.js"></script>
     <div
       class="fixed bottom-0 left-0 z-[999] w-full space-y-2 overflow-hidden rounded-none bg-white px-4 py-4 backdrop-blur-sm sm:bottom-4 sm:left-4 sm:w-96 sm:space-y-4 sm:rounded-lg sm:bg-white/20 sm:py-8"
@@ -23,6 +46,7 @@
           data-material="LightWood"
           aria-label="Light Wood"
           aria-pressed="true"
+          disabled
         >
           <img
             class="rounded-full select-none"
@@ -36,6 +60,7 @@
           data-material="DarkWood"
           aria-label="Dark Wood"
           aria-pressed="false"
+          disabled
         >
           <img
             class="rounded-full select-none"
@@ -49,6 +74,7 @@
           data-material="Black"
           aria-label="Black"
           aria-pressed="false"
+          disabled
         >
           <img
             class="rounded-full select-none"
@@ -62,6 +88,7 @@
           data-material="White"
           aria-label="White"
           aria-pressed="false"
+          disabled
         >
           <img
             class="rounded-full select-none"

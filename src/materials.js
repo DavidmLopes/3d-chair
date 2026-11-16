@@ -1,7 +1,7 @@
 import { SRGBColorSpace, TextureLoader } from "three";
 
-export function createMaterials(pane) {
-  const textureLoader = new TextureLoader();
+export function createMaterials(pane, manager) {
+  const textureLoader = new TextureLoader(manager);
   const definitions = {
     LightWood: { label: "Light Wood", file: "Wood1.jpg" },
     DarkWood: { label: "Dark Wood", file: "Wood2.jpg" },
